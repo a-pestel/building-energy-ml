@@ -1,4 +1,5 @@
 """Chargement des données BDG2 (réutilisé dans tous les notebooks)."""
+
 from pathlib import Path
 
 import pandas as pd
@@ -19,7 +20,7 @@ def load_weather(site_id: str | None = None) -> pd.DataFrame:
 
 
 def load_building(building_id: str) -> pd.DataFrame:
-    """Électricité horaire (kWh) d'un bâtiment + météo de son site, sur un index horaire complet."""
+    """Électricité horaire (kWh) + météo du site, sur un index horaire complet."""
     elec = pd.read_csv(
         RAW / "electricity_cleaned.csv",
         usecols=["timestamp", building_id],

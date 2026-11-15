@@ -1,0 +1,13 @@
+[project]
+name = "building-energy-ml"
+version = "0.1.0"
+description = "Prévision de consommation, détection d'anomalies et M&V sur BDG2"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 88
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B"]
+ignore = ["E402"]  # imports après sys.path.append dans les notebooks

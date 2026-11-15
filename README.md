@@ -22,10 +22,31 @@ Données : [Building Data Genome Project 2](https://github.com/buds-lab/building
 
 ![Semaine type](reports/figures/01_semaine.png)
 
-Modèle change-point 3P (refroidissement) sur les jours ouvrés :
-T équilibre ≈ 21,8 °C, talon ≈ 645 kWh/j, pente ≈ 47 kWh/j/K, R² = 0,87.
+**Signature énergétique** : modèle change-point 3P (refroidissement, ASHRAE Guideline 14)
+sur les jours ouvrés : T équilibre ≈ 21,8 °C, talon ≈ 645 kWh/j, pente ≈ 47 kWh/j/K.
+
+| Jours ouvrés | R² | CV(RMSE) |
+|---|---|---|
+| tous | 0,87 | 11,6 % |
+| hors jours fériés / vacances | 0,91 | 9,2 % |
 
 ![Signature énergétique](reports/figures/01_changepoint.png)
+
+Points clés :
+- **Jours fériés** : les plus gros écarts au modèle sont tous des jours fériés ou des
+  vacances universitaires. Il faudra une feature calendrier pour ne pas les prendre
+  pour des anomalies.
+- **Pas de chauffage électrique** : un modèle 5P n'apporte rien (CV(RMSE) identique).
+  Le chauffage est probablement assuré par le réseau de chaleur du campus.
+- **Fuseau horaire** : le démarrage reste à 6 h toute l'année (l'Arizona n'a pas
+  d'heure d'été), mais les métadonnées indiquent `US/Mountain` au lieu de
+  `America/Phoenix`, ce qui décalerait les données d'1 h en été.
+- **Saisonnalité résiduelle** : à température égale, la consommation est plus élevée
+  en fin d'été (mousson → humidité), ce qui donne une piste pour le point de rosée.
+
+![Résidus](reports/figures/01_residus.png)
+
+Notebook complet : [PDF](reports/01_exploration.pdf).
 
 ## Reproduire
 
@@ -41,6 +62,11 @@ jupyter lab notebooks/
 ```
 data/raw, data/processed   # données (non versionnées)
 notebooks/                 # analyses numérotées
-src/                       # code réutilisable (chargement, modèles)
-reports/figures/           # figures exportées
+src/                       # code réutilisable
+  data.py                  #   chargement bâtiment + météo
+  changepoint.py           #   modèles 3P / 5P (ASHRAE G14)
+  metrics.py               #   R², CV(RMSE), NMBE
+reports/                   # PDF des notebooks et figures exportées
 ```
+
+Code formaté avec [Ruff](https://docs.astral.sh/ruff/) (`ruff format . && ruff check .`).

@@ -5,8 +5,9 @@ https://github.com/buds-lab/building-data-genome-project-2
 
 Usage : python -m src.download_data
 """
-from pathlib import Path
+
 import urllib.request
+from pathlib import Path
 
 BASE = "https://media.githubusercontent.com/media/buds-lab/building-data-genome-project-2/master/data"
 FILES = {
